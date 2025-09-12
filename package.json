@@ -1,0 +1,26 @@
+{
+  "name": "mongoose-ayala-santiago",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node --watch app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SantiagoAyala2118/mongoose-ayala-santiago.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SantiagoAyala2118/mongoose-ayala-santiago/issues"
+  },
+  "homepage": "https://github.com/SantiagoAyala2118/mongoose-ayala-santiago#readme",
+  "dependencies": {
+    "express": "^5.1.0",
+    "mongoose": "^8.18.1"
+  }
+}
