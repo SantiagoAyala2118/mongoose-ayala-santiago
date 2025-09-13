@@ -1,4 +1,4 @@
- #**Practica De Crud BáSico Con Mongoose**
+ # **Practica De Crud BáSico Con Mongoose**
 ## Documento embebido y referenciado
 - ***Documento embebido en el esquema de usuario:***Decidí usar el documento embebido en el esquema de usuario, justamente en el campo "favorite_games" debido a que me pareció que podía encajar de mejor manera gracias a las características propias del documento embebido, como ser que este se utiliza para información que solamente está relacionada con el documento padre, y que la relación que se maneja aquí es de uno a muchos.
 
