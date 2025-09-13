@@ -1,3 +1,5 @@
+import { GroupModel } from "../models/group.model.js";
+import { ProfileModel } from "../models/profile.model.js";
 import { UserModel } from "../models/user.model.js";
 
 export const createUser = async (req, res) => {
@@ -26,7 +28,7 @@ export const createUser = async (req, res) => {
 
 export const getAllUsers = async (req, res) => {
   try {
-    const users = await UserModel.find();
+    const users = await UserModel.find({ deletedAt: null });
 
     return res.status(200).json({
       ok: true,
@@ -45,7 +47,10 @@ export const getAllUsers = async (req, res) => {
 export const getUser = async (req, res) => {
   const { id } = req.params;
   try {
-    const user = await UserModel.findById(id);
+    const user = await UserModel.findOne({
+      _id: id,
+      deletedAt: null,
+    });
 
     return res.status(200).json({
       ok: true,
@@ -90,7 +95,22 @@ export const updateUser = async (req, res) => {
 export const deleteUser = async (req, res) => {
   const { id } = req.params;
   try {
-    const deleteUser = await UserModel.findByIdAndDelete(id);
+    //BORRO DE FORMA LÓGICA UN USUARIO
+    const deleteUser = await UserModel.findByIdAndUpdate(
+      id,
+      {
+        deletedAt: new Date(),
+      },
+      {
+        new: true,
+      }
+    );
+
+    //AUTOMÁTIAMENTE LO BORRO DE LOS CAMPOS EN DONDE SE REFERENCIA EN LA COLECCIÓN GRUPOS
+    await GroupModel.updateMany({ members: id }, { $pull: { members: id } });
+
+    //Y BORRO EL PERFIL ASOCIADO
+    await ProfileModel.findOneAndDelete({ owner: id });
 
     return res.status(200).json({
       ok: true,
@@ -101,7 +121,7 @@ export const deleteUser = async (req, res) => {
     console.error("Server error", err);
     return res.status(500).json({
       ok: false,
-      message: "User deleted",
+      message: "Server error",
     });
   }
 };
