@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema, Types, model } from "mongoose";
 
 const userSchema = new Schema(
   {
@@ -27,6 +27,11 @@ const userSchema = new Schema(
         type: Number,
         required: false,
       },
+    },
+    groups: {
+      type: [Types.ObjectId],
+      ref: "Group",
+      required: false,
     },
   },
   {
