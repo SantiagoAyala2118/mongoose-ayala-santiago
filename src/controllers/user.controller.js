@@ -3,13 +3,13 @@ import { ProfileModel } from "../models/profile.model.js";
 import { UserModel } from "../models/user.model.js";
 
 export const createUser = async (req, res) => {
-  const { username, email, password, favorite_game } = req.body;
+  const { username, email, password, favorite_games } = req.body;
   try {
     const newUser = await UserModel.create({
       username,
       email,
       password,
-      favorite_game,
+      favorite_games,
     });
 
     return res.status(201).json({
@@ -75,7 +75,7 @@ export const updateUser = async (req, res) => {
       username,
       email,
       password,
-      favorite_game
+      favorite_games
     );
 
     return res.status(200).json({
