@@ -2,12 +2,11 @@ import { GroupModel } from "../models/group.model.js";
 import { UserModel } from "../models/user.model.js";
 
 export const createGroup = async (req, res) => {
-  const { name, members } = req.body;
+  const { name } = req.body;
   try {
     //CREO UN GRUPO PRINCIPALMENTE SIN QUE ESTÉ ASOCIADO POR REFERENCIA A NINGUN USUARIO
     const newGroup = await GroupModel.create({
       name,
-      members,
     });
 
     return res.status(201).json({
@@ -68,13 +67,12 @@ export const updateGroup = async (req, res) => {
   const { id } = req.params;
   const { name, members } = req.body;
   try {
-    //ACTUALIZO EL GRUPO PRINCIPALMENTE PARA AÑADIR A LOS MIEMBROS
     const updatedGroup = await GroupModel.findByIdAndUpdate(
       id,
       {
         name,
         //FUNCION PARA AÑADIR ID'S DENTRO DEL ARREGLO QUE REFERENCIA A LOS USUARIOS
-        $addToSet: { members: { $each: members } },
+        $addToSet: { members: members },
       },
       { new: true }
     );
