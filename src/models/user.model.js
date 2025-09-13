@@ -14,20 +14,22 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    favorite_game: {
-      name: {
-        type: String,
-        required: true,
+    favorite_games: [
+      {
+        name: {
+          type: String,
+          required: true,
+        },
+        genre: {
+          type: String,
+          required: true,
+        },
+        hours_played: {
+          type: Number,
+          required: false,
+        },
       },
-      genre: {
-        type: String,
-        required: true,
-      },
-      hours_played: {
-        type: Number,
-        required: false,
-      },
-    },
+    ],
     groups: {
       type: [Types.ObjectId],
       ref: "Group",
