@@ -4,6 +4,7 @@ import { Router } from "express";
 import { userRoutes } from "./user.routes.js";
 import { profileRoutes } from "./profile.routes.js";
 import { groupRoutes } from "./group.routes.js";
+import { userGroupRoutes } from "./user_group.routes.js";
 
 export const routes = Router();
 
@@ -15,3 +16,6 @@ routes.use(profileRoutes);
 
 //RUTAS DE GROUP
 routes.use(groupRoutes);
+
+//RUTA DE USER-GROUP
+routes.use(userGroupRoutes);
