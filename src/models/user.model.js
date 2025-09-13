@@ -33,6 +33,10 @@ const userSchema = new Schema(
       ref: "Group",
       required: false,
     },
+    deletedAt: {
+      type: Date,
+      default: null,
+    },
   },
   {
     versionKey: false,
