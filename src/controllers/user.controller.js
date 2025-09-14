@@ -30,10 +30,24 @@ export const getAllUsers = async (req, res) => {
   try {
     const users = await UserModel.find({ deletedAt: null });
 
+    //COMO NO TENGO REFERENCIA DIRECTA DE PROFILE EN EL ESQUEMA DE USER, HAGO LA CONSULTA MANUALMENTE
+    // const userProfile = await ProfileModel.find({ owner: users[0]._id });
+    const userProfile = async () => {
+      const profiles = [];
+      for (let i = 0; i < users.length; i++) {
+        let profile = await ProfileModel.find({ owner: users[i]._id });
+        profiles.push(profile);
+      }
+      return profiles;
+    };
+
+    const profile = await userProfile();
+
     return res.status(200).json({
       ok: true,
       message: "Here are the users",
       User: users,
+      Profiles: profile,
     });
   } catch (err) {
     console.error("Server error", err);
@@ -52,10 +66,14 @@ export const getUser = async (req, res) => {
       deletedAt: null,
     });
 
+    //COMO NO TENGO REFERENCIA DIRECTA DE PROFILE EN EL ESQUEMA DE USER, HAGO LA CONSULTA MANUALMENTE
+    const userProfile = await ProfileModel.findOne({ owner: id });
+
     return res.status(200).json({
       ok: true,
       message: "Here is the user",
       User: user,
+      Profile: userProfile,
     });
   } catch (err) {
     console.error("Server error", err);
