@@ -30,23 +30,40 @@ export const getAllUsers = async (req, res) => {
   try {
     const users = await UserModel.find({ deletedAt: null });
 
+    if (users.length == 0) {
+      return res.status(404).json({
+        ok: false,
+        message: "There is no users on the DB",
+      });
+    }
     //COMO NO TENGO REFERENCIA DIRECTA DE PROFILE EN EL ESQUEMA DE USER, HAGO LA CONSULTA MANUALMENTE
-    // const userProfile = await ProfileModel.find({ owner: users[0]._id });
+
+    /*Este bucle itera sobre la cantidad de usuarios que tenga en la base de datos. Tras cada iteración, consulta
+    en el modelo de perfiles algún docunento que tenga referencia con el usuario de esa iteracíon y, en caso de 
+    tener perfiles asociados, pushea ese documento al arreglo*/
     const userProfile = async () => {
       const profiles = [];
       for (let i = 0; i < users.length; i++) {
         let profile = await ProfileModel.find({ owner: users[i]._id });
         profiles.push(profile);
       }
+
+      if (profiles.length == 0) {
+        profiles.push("There is no profiles asociated");
+      }
+
       return profiles;
     };
 
+    //Llamo a esa función antes de dar el resultado al usuario
     const profile = await userProfile();
 
     return res.status(200).json({
       ok: true,
       message: "Here are the users",
       User: users,
+      /*Esto mmuestra un arreglo con todos los perfiles que tengan una referencia a los usuarios encontrados,
+      más no de forma precisa, el encargado tiene que estar buscando coincidencias. FALTA PULIR*/
       Profiles: profile,
     });
   } catch (err) {
@@ -87,7 +104,7 @@ export const getUser = async (req, res) => {
 export const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const { username, email, password, favorite_game } = req.body;
+    const { username, email, password, favorite_games } = req.body;
     const updateUser = await UserModel.findByIdAndUpdate(
       id,
       username,
