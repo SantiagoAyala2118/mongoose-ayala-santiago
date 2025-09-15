@@ -21,7 +21,9 @@ export const createUserValidations = [
     .withMessage("The email format is invalid")
     .custom(async (email, { req }) => {
       try {
-        const emailExisting = await UserModel.find({ email: req.body.email });
+        const emailExisting = await UserModel.findOne({
+          email: req.body.email,
+        });
 
         if (emailExisting) {
           return Promise.reject(
@@ -42,25 +44,33 @@ export const createUserValidations = [
 ];
 
 export const getUserValidations = [
-  param("id")
-    .trim()
-    .isInt({ gt: 0 })
-    .withMessage("The id must be a number greater than 0")
-    .custom(async (id) => {
-      try {
-        const user = await UserModel.findById(id);
+  param("id").custom(async (id) => {
+    try {
+      const user = await UserModel.findOne({ _id: id });
 
-        if (!user) {
-          return Promise.reject("There is no user in the DB with that id");
-        }
-      } catch (err) {
-        console.error("Error checking the existency of the user by id", err);
-        return Promise.reject("Error checking the existency of the user by id");
+      if (!user) {
+        return Promise.reject("There is no user in the DB with that id");
       }
-    }),
+    } catch (err) {
+      console.log("Error checking the existency of that user by id", err);
+      return Promise.reject("Error checking the existency of that user by id");
+    }
+  }),
 ];
 
 export const updateUserValidations = [
+  param("id").custom(async (id) => {
+    try {
+      const user = await UserModel.findOne({ _id: id });
+
+      if (!user) {
+        return Promise.reject("There is no user in the DB with that ID");
+      }
+    } catch (err) {
+      console.log("Error checking the existency of that user by id", err);
+      return Promise.reject("Error checking the existency of that user by id");
+    }
+  }),
   body("username")
     .optional()
     .trim()
@@ -81,7 +91,9 @@ export const updateUserValidations = [
     .withMessage("The email format is invalid")
     .custom(async (email, { req }) => {
       try {
-        const emailExisting = await UserModel.find({ email: req.body.email });
+        const emailExisting = await UserModel.findOne({
+          email: req.body.email,
+        });
 
         if (emailExisting) {
           return Promise.reject(
@@ -122,18 +134,16 @@ export const updateUserValidations = [
 ];
 
 export const deleteUserValidations = [
-  param("id")
-    .trim()
-    .isInt({ gt: 0 })
-    .withMessage("The id must be a number greater than 0")
-    .custom(async (id) => {
-      try {
-        const user = await UserModel.findOne({ _id: id });
-      } catch (err) {
-        console.log("Error checking the existency of that user by id", err);
-        return Promise.reject(
-          "Error checking the existency of that user by id"
-        );
+  param("id").custom(async (id) => {
+    try {
+      const user = await UserModel.findOne({ _id: id });
+
+      if (!user) {
+        return Promise.reject("There is no user in the DB with that id");
       }
-    }),
+    } catch (err) {
+      console.log("Error checking the existency of that user by id", err);
+      return Promise.reject("Error checking the existency of that user by id");
+    }
+  }),
 ];
