@@ -141,11 +141,13 @@ export const deleteUser = async (req, res) => {
       }
     );
 
-    //AUTOMÁTIAMENTE LO BORRO DE LOS CAMPOS EN DONDE SE REFERENCIA EN LA COLECCIÓN GRUPOS
-    await GroupModel.updateMany({ members: id }, { $pull: { members: id } });
+    if (deleteUser) {
+      //AUTOMÁTIAMENTE LO BORRO DE LOS CAMPOS EN DONDE SE REFERENCIA EN LA COLECCIÓN GRUPOS
+      await GroupModel.updateMany({ members: id }, { $pull: { members: id } });
 
-    //Y BORRO EL PERFIL ASOCIADO
-    await ProfileModel.findOneAndDelete({ owner: id });
+      //Y BORRO EL PERFIL ASOCIADO
+      await ProfileModel.findOneAndDelete({ owner: id });
+    }
 
     return res.status(200).json({
       ok: true,
