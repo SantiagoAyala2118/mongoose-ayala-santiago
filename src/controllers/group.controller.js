@@ -102,9 +102,10 @@ export const deleteGroup = async (req, res) => {
   try {
     const deletedGroup = await GroupModel.findByIdAndDelete(id);
 
-    //ELIMINO TAMBIEN EL ID DE REFERENCIA EN LOS DOCUMENTOS DE USUARIOS
-    await UserModel.updateMany({ groups: id }, { $pull: { groups: id } });
-
+    if (deleteGroup) {
+      //ELIMINO TAMBIEN EL ID DE REFERENCIA EN LOS DOCUMENTOS DE USUARIOS
+      await UserModel.updateMany({ groups: id }, { $pull: { groups: id } });
+    }
     return res.status(200).json({
       ok: true,
       message: "Group deleted",
