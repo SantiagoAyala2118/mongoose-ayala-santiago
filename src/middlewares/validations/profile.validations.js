@@ -40,41 +40,33 @@ export const createProfileValidations = [
 ];
 
 export const getProfileValidations = [
-  param("id")
-    .trim()
-    .isInt({ gt: 0 })
-    .withMessage("The id must be greater than 0")
-    .custom(async (id) => {
-      try {
-        const profile = await ProfileModel.findOne({ _id: id });
+  param("id").custom(async (id) => {
+    try {
+      const profile = await ProfileModel.findOne({ _id: id });
 
-        if (!profile) {
-          return Promise.reject("There is no profile in the DB with that id");
-        }
-      } catch (err) {
-        console.error("Error checking the existency of the profile", err);
-        return Promise.reject("Error checking the existency of the profile");
+      if (!profile) {
+        return Promise.reject("There is no profile in the DB with that id");
       }
-    }),
+    } catch (err) {
+      console.error("Error checking the existency of the profile", err);
+      return Promise.reject("Error checking the existency of the profile");
+    }
+  }),
 ];
 
 export const updateProfileValidations = [
-  param("id")
-    .trim()
-    .isInt({ gt: 0 })
-    .withMessage("The id must be greater than 0")
-    .custom(async (id) => {
-      try {
-        const profile = await ProfileModel.findOne({ _id: id });
+  param("id").custom(async (id) => {
+    try {
+      const profile = await ProfileModel.findOne({ _id: id });
 
-        if (!profile) {
-          return Promise.reject("There is no profile in the DB with that id");
-        }
-      } catch (err) {
-        console.error("Error checking the existency of the profile", err);
-        return Promise.reject("Error checking the existency of the profile");
+      if (!profile) {
+        return Promise.reject("There is no profile in the DB with that id");
       }
-    }),
+    } catch (err) {
+      console.error("Error checking the existency of the profile", err);
+      return Promise.reject("Error checking the existency of the profile");
+    }
+  }),
   body("profile_picture")
     .optional()
     .trim()
@@ -115,20 +107,16 @@ export const updateProfileValidations = [
 ];
 
 export const deleteProfileValidations = [
-  param("id")
-    .trim()
-    .isInt({ gt: 0 })
-    .withMessage("The id must be greater than 0")
-    .custom(async (id) => {
-      try {
-        const profile = await ProfileModel.findOne({ _id: id });
+  param("id").custom(async (id) => {
+    try {
+      const profile = await ProfileModel.findOne({ _id: id });
 
-        if (!profile) {
-          return Promise.reject("There is no profile in the DB with that id");
-        }
-      } catch (err) {
-        console.error("Error checking the existency of the profile", err);
-        return Promise.reject("Error checking the existency of the profile");
+      if (!profile) {
+        return Promise.reject("There is no profile in the DB with that id");
       }
-    }),
+    } catch (err) {
+      console.error("Error checking the existency of the profile", err);
+      return Promise.reject("Error checking the existency of the profile");
+    }
+  }),
 ];

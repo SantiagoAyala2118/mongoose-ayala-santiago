@@ -20,25 +20,29 @@ export const createGroupValidations = [
 ];
 
 export const getGroupValidations = [
-  param("id")
-    .trim()
-    .isInt({ gt: 0 })
-    .withMessage("The id must be a number greater than 0")
-    .custom(async (id) => {
-      try {
-        const group = await GroupModel.findById(id);
+  param("id").custom(async (id) => {
+    try {
+      const group = await GroupModel.findById(id);
 
-        if (!group) {
-          return Promise.reject("There is no group in the DB with that id");
-        }
-      } catch (err) {
-        console.error("Error checking the existency of the group", err);
-        return Promise.reject("Error checking the existency of the group");
+      if (!group) {
+        return Promise.reject("There is no group in the DB with that id");
       }
-    }),
+    } catch (err) {
+      console.error("Error checking the existency of the group", err);
+      return Promise.reject("Error checking the existency of the group");
+    }
+  }),
 ];
 
 export const updateGroupValidations = [
+  param("id").custom(async (id) => {
+    try {
+      const user = await UserModel.findOne({ _id: id });
+    } catch (err) {
+      console.log("Error checking the existency of that user by id", err);
+      return Promise.reject("Error checking the existency of that user by id");
+    }
+  }),
   body("name")
     .optional()
     .trim()
@@ -76,20 +80,16 @@ export const updateGroupValidations = [
 ];
 
 export const deleteGroupValidations = [
-  param("id")
-    .trim()
-    .isInt({ gt: 0 })
-    .withMessage("The id must be a number greater than 0")
-    .custom(async (id) => {
-      try {
-        const group = await GroupModel.findById(id);
+  param("id").custom(async (id) => {
+    try {
+      const group = await GroupModel.findById(id);
 
-        if (!group) {
-          return Promise.reject("There is no group in the DB with that id");
-        }
-      } catch (err) {
-        console.error("Error checking the existency of the group", err);
-        return Promise.reject("Error checking the existency of the group");
+      if (!group) {
+        return Promise.reject("There is no group in the DB with that id");
       }
-    }),
+    } catch (err) {
+      console.error("Error checking the existency of the group", err);
+      return Promise.reject("Error checking the existency of the group");
+    }
+  }),
 ];
